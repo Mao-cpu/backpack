@@ -1,0 +1,5 @@
+beibao0.in      Max_value:133      solution_vector:{1,1,1,1,0}      Time:0.0108838s
+beibao1.in      Max_value:334      solution_vector:{1,1,1,1,1,1,1,0}      Time:0.0147885s
+beibao2.in      Max_value:388      solution_vector:{1,1,1,1,1,1,1,1,1,1}      Time:0.0163905s
+beibao1.in      Max_value:334      solution_vector:{1,1,1,1,1,1,1,0}      Time:0.0159399s
+beibao2.in      Max_value:388      solution_vector:{1,1,1,1,1,1,1,1,1,1}      Time:0.0181435s

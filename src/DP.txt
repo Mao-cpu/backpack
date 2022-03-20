@@ -1,0 +1,6 @@
+beibao0.in      Max_value:133      solution_vector:{0,0,0,0,1}      Time:0.0137955s
+beibao2.in      Max_value:388      solution_vector:{0,1,0,1,0,1,1,1,0,0}      Time:0.0151366s
+beibao1.in      Max_value:334      solution_vector:{0,0,0,0,1,1,0,1}      Time:0.0190492s
+beibao5.in      Max_value:2617      solution_vector:{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,1,1,1,0,1,0,1,1,0,1,0,1,1,0,1,1,1,0,0}      Time:0.17469s
+beibao0.in      Max_value:133      solution_vector:{0,0,0,0,1}      Time:0.0112072s
+beibao2.in      Max_value:388      solution_vector:{0,1,0,1,0,1,1,1,0,0}      Time:0.0178966s
