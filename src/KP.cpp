@@ -4,43 +4,42 @@
 #include <vector> 
 #include <string>
 #include <ctime>
-#include<iomanip>
+#include <iomanip>
 #include <windows.h>
 using namespace std;
-//********************全局变量************************** 
-int N;                         //背包总个数 
-int WMAX;                      //最大容量 
-int cw=0,cp=0;                 //当前重量和价值
-int max_value=0;    	       //结果：最大价值 
-double totaltime=0;            //计算函数时间 
-int vw[200];            	   //单位重量比 
-int w_v[200][2];    	       //价值重量数组
-int T[1500][1500];  	       //动态规划表格 
-int decrease[200];  	       //保存递减序列的下标 
-int vector_quantity[200];  	   //解向量
-int best_results[200];
-int left_value;
-string s;                      //文件名字符串 
-ofstream ofs;                  //创建输出流对象
+//********************全局变量****************************
+int N;                        		//背包总个数 
+int WMAX;                      		//最大容量 
+int cw=0,cp=0;                 		//当前重量和价值
+int max_value=0;    	       		//结果：最大价值 
+double totaltime=0;            		//计算函数时间 
+int vw[200];            	   		//单位重量比 
+int w_v[200][2];    	       		//价值重量数组
+int T[1500][1500];  	       		//动态规划表格 
+int decrease[200];  	       		//保存递减序列的下标 
+int vector_quantity[200];  	   		//解向量
+int best_results[200];        	 	//解向量副本 
+int left_value;                		//剩余总价值：回溯剪枝 
+string s;                      		//文件名字符串 
+ofstream ofs;                  		//创建输出流对象
+ifstream ifs;                       //创建输入流对象
 
-_LARGE_INTEGER time_start;     /*开始时间*/
-_LARGE_INTEGER time_over;      /*结束时间*/
-double dqFreq;                 /*计时器频率*/
-LARGE_INTEGER f;               /*计时器频率*/
+_LARGE_INTEGER time_start;     		/*开始时间*/
+_LARGE_INTEGER time_over;      		/*结束时间*/
+double dqFreq;                      /*计时器频率*/
+LARGE_INTEGER f;                    /*计时器频率*/
 
-//*******************算法函数**************************** 
-int DP();
-int sort();
-int output();
-int  Greedy();
-void output1(); 
-int KnapSack();
-double bound(int i);
-int input(int choice);
-void foo(ifstream& ifs);
-void Backtracking(int i);
-void output_result(ofstream& ofs);
-//******************主函数******************************* 
+//*******************算法函数******************************
+int DP();                           //动态规划解决KP问题 
+int output();                  		//输出测试数据
+int Greedy();                  		//贪心算法解决KP问题
+int KnapSack();                		//构建动态规划表 
+int sort(int choice);          		//按单位重量价值排序
+int input(int choice);         		//选择输入数据文件0-9 
+void foo();       	            	//读文件，取得测试数据
+void Backtracking(int i);      		//回溯法解决KP问题 
+void output_result();               //将结果输出并写入文件
+//******************主函数********************************* 
 int main()
 {
 	int choice;
@@ -48,11 +47,12 @@ int main()
 	printf("        1.动态规划法       \n");
 	printf("        2.贪心算法         \n");
 	printf("        3.回溯算法         \n");
-	printf("        4.结束测试         \n\n"); 
+	printf("        4.非递增排序       \n");
+	printf("        5.结束测试         \n\n"); 
 	printf(" **************************\n");
 	cout<<"请选择算法(或结束测试)："; 
 	cin>>choice;
-	while(choice!=4)
+	while(choice!=5)
 	{
 		switch (choice)
 		{
@@ -66,6 +66,9 @@ int main()
 			case 3:
 			    input(choice);
 				break;
+			case 4:
+			    input(choice);
+				break; 
 			default:
 			    printf("输错了！请重新输入！\n");
 				break;	
@@ -74,18 +77,18 @@ int main()
 		printf("        1.动态规划法       \n");
 		printf("        2.贪心算法         \n");
 		printf("        3.回溯算法         \n");
-		printf("        4.结束测试         \n\n"); 
+		printf("        4.非递增排序       \n");
+		printf("        5.结束测试         \n\n"); 
 		printf(" **************************\n");
 	    cout<<"请选择算法(或结束测试)："; 
 	    cin>>choice;
 	}
 	return 0;
 } 
-//5.选择输入数据文件0-9 
+//0.选择输入数据文件0-9 
 int input(int choice)
 {
 	vector<int> v;
-	ifstream ifs; 
 	int choice2;
 
 	printf("---------选择测试数据0-9----------\n\n");
@@ -110,44 +113,50 @@ int input(int choice)
     	//文件第一行数据为重量限制以及背包数，需单独拿出，用count来区分 
 		switch (choice2){
 			//打开文件 //执行算法 
-			case 0: ifs.open("beibao0.in",ios::in); s="beibao0.in"; foo(ifs); break;
-			case 1: ifs.open("beibao1.in",ios::in); s="beibao1.in"; foo(ifs); break;
-			case 2: ifs.open("beibao2.in",ios::in); s="beibao2.in"; foo(ifs); break;
-			case 3: ifs.open("beibao3.in",ios::in); s="beibao3.in"; foo(ifs); break;
-			case 4: ifs.open("beibao4.in",ios::in); s="beibao4.in"; foo(ifs); break;
-			case 5: ifs.open("beibao5.in",ios::in); s="beibao5.in"; foo(ifs); break;
-			case 6: ifs.open("beibao6.in",ios::in); s="beibao6.in"; foo(ifs); break;
-			case 7: ifs.open("beibao7.in",ios::in); s="beibao7.in"; foo(ifs); break;
-			case 8: ifs.open("beibao8.in",ios::in); s="beibao8.in"; foo(ifs); break;
-			case 9: ifs.open("beibao9.in",ios::in); s="beibao9.in"; foo(ifs); break;
+			case 0: ifs.open("beibao0.in",ios::in); s="beibao0.in"; foo(); break;
+			case 1: ifs.open("beibao1.in",ios::in); s="beibao1.in"; foo(); break;
+			case 2: ifs.open("beibao2.in",ios::in); s="beibao2.in"; foo(); break;
+			case 3: ifs.open("beibao3.in",ios::in); s="beibao3.in"; foo(); break;
+			case 4: ifs.open("beibao4.in",ios::in); s="beibao4.in"; foo(); break;
+			case 5: ifs.open("beibao5.in",ios::in); s="beibao5.in"; foo(); break;
+			case 6: ifs.open("beibao6.in",ios::in); s="beibao6.in"; foo(); break;
+			case 7: ifs.open("beibao7.in",ios::in); s="beibao7.in"; foo(); break;
+			case 8: ifs.open("beibao8.in",ios::in); s="beibao8.in"; foo(); break;
+			case 9: ifs.open("beibao9.in",ios::in); s="beibao9.in"; foo(); break;
 			default: cout<<"输入错误，请重新输入！"<<endl; break;	
 	    }
 		QueryPerformanceFrequency(&f);
     	dqFreq=(double)f.QuadPart;
     	QueryPerformanceCounter(&time_start);
     	if(choice==1)
-		{
     		DP();
-		}else if(choice==2)
-		{
+		else if(choice==2)
 			Greedy();
-		}else if(choice==3)
+		else if(choice==3)
 		{
 			cw=0,cp=0;
 			max_value=0; 
-			for(int i=0;i<N;i++){
+			for(int i=0;i<N;i++)
+			{
 				left_value+=w_v[i][1];	
-			}
-			sort(); 
+			} 
 			Backtracking(0);
-			for(int i=0;i<N;i++){
+			for(int i=0;i<N;i++)
+			{
 				vector_quantity[i]=best_results[i];
 			}
 			ofs.open("Backtracking.txt",ios::out|ios::app); 
-    		output_result(ofs);
-		}
+    		output_result();
+		}else if(choice==4)
+			sort(choice);
 		QueryPerformanceCounter(&time_over);
-		cout<<"运行时间:"<<((time_over.QuadPart-time_start.QuadPart)/dqFreq)<<"s\n";	
+		cout<<"运行时间:"<<((time_over.QuadPart-time_start.QuadPart)/dqFreq)<<"s\n";
+		if(choice==1)
+			cout<<"结果已写入DP.txt文件中！\n";    
+		else if(choice==2)
+			cout<<"结果已写入Greedy.txt文件中！\n"; 
+		else if(choice==3)
+		 	cout<<"结果已写入backtracking.txt文件中！\n";	
 		ofs<<"Time:"<<((time_over.QuadPart-time_start.QuadPart)/dqFreq)<<"s\n";
 		ofs.close();
 		system("pause");
@@ -160,14 +169,13 @@ int input(int choice)
 //已知WMAX、N、w_v[N][2]，要的结果是最大能装的重量！ 
 //1.动态规划解决KP问题 
 int DP()
-{
-	sort(); 
+{ 
 	max_value=KnapSack();
 	ofs.open("DP.txt",ios::out|ios::app); 
-	output_result(ofs);
+	output_result();
 	return 0;
 }
-//构建动态规划表 
+//2.构建动态规划表 
 int KnapSack()
 {
 	int i=0,j=0;
@@ -192,7 +200,8 @@ int KnapSack()
 	}
 	for(j=WMAX,i=N;i>=1;i--)
 	{   //求装入背包的物品 
-		if(T[i][j]>T[i-1][j]){
+		if(T[i][j]>T[i-1][j])
+		{
 			vector_quantity[i]=1;  //若当前价值大于上一行价值，说明当前物品被装入背包中 
 			j=j-w_v[i][0];
 		}
@@ -200,15 +209,16 @@ int KnapSack()
 	//得到背包取得的最大价值 
 	return T[N][WMAX];  
 }
-//2.贪心算法解决KP问题（得到的结果是近似解，并非最优解！！！） 
-int  Greedy()
+//3.贪心算法解决KP问题（得到的结果是近似解，并非最优解！！！） 
+int Greedy()
 {
+	int choice=0;
 	//直接使用排好序的下标进行贪心选择
 	//计算最大重量，以及解向量 
 	int k=0,g=0;
 	//重新归0，方便下次使用 
 	max_value=0;
-	sort();
+	sort(choice);
 	for(int i=0;i<N;i++)
 	{
 		g=decrease[k];
@@ -222,10 +232,10 @@ int  Greedy()
 	}
 	//将结果写入文件 
 	ofs.open("Greedy.txt",ios::out|ios::app); 
-	output_result(ofs);
+	output_result();
 	return 0;
 }
-//3.回溯法解决KP问题 
+//4.回溯法
 void Backtracking(int i)
 {
     if(i>=N) //递归结束的判定条件
@@ -256,8 +266,8 @@ void Backtracking(int i)
     	Backtracking(i+1);
     left_value+=w_v[i][1];
 }
-//4.按单位重量价值排序（递减排序） 
-int sort()
+//5.按单位重量价值排序（递减排序） 
+int sort(int choice)
 {
     int index;                  //下标 
     int k=0,g=0; 
@@ -271,34 +281,38 @@ int sort()
 	{
 		for(int j=0;j<N-1-i;j++)
 		{
-			if(vw[j]<vw[j+1]){
+			if(vw[j]<vw[j+1])
+			{
 				index=vw[j];
 				vw[j]=vw[j+1];
 				vw[j+1]=index;
 				index=decrease[j];
 				decrease[j]=decrease[j+1];  //存入下标，用来递减排序 
-				decrease[j+1]=index;  //输出时循环输出，下标用的decrease中的 
+				decrease[j+1]=index;        //输出时循环输出，下标用的decrease中的 
 			}	
 		}
+	}
+	if(choice==4)
+	{
+		cout<<"下标排序"<<endl;
+		for(int m=0;m<N;m++)
+		{
+			cout<<decrease[m]+1<<" ";
+		}
+		cout<<endl<<"按单位重量价值递减排序："<<endl;
+		for(int i=0;i<N;i++)
+		{
+			g=decrease[k];
+			cout<<"背包"<<g+1<<"  ";
+			cout<<w_v[g][0]<<"  "<<w_v[g][1]<<"  ";
+	    	printf("%.2f\n",w_v[g][1]/float(w_v[g][0]));	
+			k++;	
+		}
 	} 
-	cout<<"下标排序"<<endl;
-	for(int m=0;m<N;m++)
-	{
-		cout<<decrease[m]+1<<" ";
-	}
-	cout<<endl<<"按单位重量价值递减排序："<<endl;
-	for(int i=0;i<N;i++)
-	{
-		g=decrease[k];
-		cout<<"背包"<<g+1<<"  ";
-		cout<<w_v[g][0]<<"  "<<w_v[g][1]<<"  ";
-	    printf("%.2f\n",w_v[g][1]/float(w_v[g][0]));	
-		k++;	
-	}
 	return 0;	
 } 
-//5.读文件，执行对应算法 
-void foo(ifstream& ifs)
+//6.读文件，取得测试数据 
+void foo()
 {
 	int count=0;
 	int t1;
@@ -329,7 +343,7 @@ void foo(ifstream& ifs)
 	ifs.close();
 	output();
 }
-//输出测试数据
+//7.输出测试数据
 int output(){
 	for(int i=0;i<N;i++)
 	{
@@ -351,8 +365,8 @@ int output(){
 	cout<<"---------------------------"<<endl;
 	return 0;
 }
-//将结果输出并写入文件
-void output_result(ofstream& ofs)
+//8.将结果输出并写入文件
+void output_result()
 {
 	ofs<<s<<"      ";
 	ofs<<"Max_value:"<<max_value<<"      ";
@@ -374,9 +388,6 @@ void output_result(ofstream& ofs)
 	cout<<"}"<<endl;
 	ofs<<"}"<<"      ";
 } 
-
-
- 
  
  
 
