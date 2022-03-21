@@ -1,3 +1,20 @@
+/************************************************************ 
+ FileName: KP.cpp 
+ Author: Moki    Version : 1.0    Date: 2022/3/20 
+ Description: 选择算法、选择数据、读入数据、递减排序、散点图等 
+ Version: 基础版本1.0 
+ Function List: 
+ 1. DP() 动态规划解决KP问题
+ 2. Greedy() 贪心算法解决KP问题
+ 3. Backtracking(int i) 回溯法解决KP问题 
+ 4. sort(int choice) 单位重量价值排序
+ 5. scatter_diagram() 绘制散点图 
+ 6. output_result() 将结果输出并写入文件
+ 7. get_data() 读文件，取得测试数据
+ History: 
+ <author> <time> <version > <desc> 
+  Moki   22/3/20   1.0  build this moudle 
+***********************************************************/ 
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,9 +28,9 @@ using namespace std;
 //********************全局变量****************************
 int N;                        		//背包总个数 
 int WMAX;                      		//最大容量 
-int cw = 0, cp = 0;                 		//当前重量和价值
+int cw = 0, cp = 0;                 //当前重量和价值
 int max_value = 0;    	       		//结果：最大价值 
-double totaltime = 0;            		//计算函数时间 
+double totaltime = 0;            	//计算函数时间 
 int vw[200];            	   		//单位重量比 
 int w_v[200][2];    	       		//价值重量数组
 int T[1500][1500];  	       		//动态规划表格 
@@ -32,14 +49,14 @@ LARGE_INTEGER f;                    //计时器频率
 
 //*******************算法函数******************************
 int DP();                           //动态规划解决KP问题 
-int output();                  		//输出测试数据
+int Output();                  		//输出测试数据
 int Greedy();                  		//贪心算法解决KP问题
 int KnapSack();                		//构建动态规划表 
-void get_data();       	            //读文件，取得测试数据 
-int sort(int choice);          		//按单位重量价值排序
-int input(int choice);         		//选择输入数据文件0-9 
-void output_result();               //将结果输出并写入文件
-void scatter_diagram();             //绘制散点图 
+void Get_data();       	            //读文件，取得测试数据 
+int Sort(int choice);          		//按单位重量价值排序
+int Input(int choice);         		//选择输入数据文件0-9 
+void Output_result();               //将结果输出并写入文件
+void Scatter_diagram();             //绘制散点图 
 void Backtracking(int i);      		//回溯法解决KP问题 
 
 //******************主函数********************************* 
@@ -63,22 +80,22 @@ int main()
 		{
 			case 1:
 				//选择数据0-9 
-			    input(choice);
+			    Input(choice);
 				break;
 			case 2:
-			    input(choice);
+			    Input(choice);
 				break;
 			case 3:
-			    input(choice);
+			    Input(choice);
 				break;
 			case 4:
-			    input(choice);
+			    Input(choice);
 				break;
 			case 5:
-			 	input(choice);
+			 	Input(choice);
 				break;
 			case 6:
-			 	input(choice);
+			 	Input(choice);
 				break;
 			default:
 			    cout<<"输错了！请重新输入！\n";
@@ -102,7 +119,7 @@ int main()
 } 
 
 //0.选择输入数据文件0-9 
-int input(int choice)
+int Input(int choice)
 {
 	vector<int> v;
 	int choice2;
@@ -132,52 +149,52 @@ int input(int choice)
 			case 0: 
 				ifs.open("beibao0.in", ios::in); 
 				s = "beibao0.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 1: 
 				ifs.open("beibao1.in", ios::in); 
 				s = "beibao1.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 2: 
 				ifs.open("beibao2.in", ios::in); 
 				s = "beibao2.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 3: 
 				ifs.open("beibao3.in", ios::in); 
 				s="beibao3.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 4: 
 				ifs.open("beibao4.in",ios::in); 
 				s = "beibao4.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 5: 
 				ifs.open("beibao5.in", ios::in); 
 				s = "beibao5.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 6: 
 				ifs.open("beibao6.in", ios::in); 
 				s = "beibao6.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 7: 
 				ifs.open("beibao7.in", ios::in); 
 				s = "beibao7.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 8: 
 				ifs.open("beibao8.in", ios::in); 
 				s = "beibao8.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			case 9: 
 				ifs.open("beibao9.in", ios::in); 
 				s = "beibao9.in"; 
-				get_data(); 
+				Get_data(); 
 				break;
 			default: 
 				cout<<"输入错误，请重新输入！"<<endl; 
@@ -211,11 +228,11 @@ int input(int choice)
 			}
 			
 			ofs.open("Backtracking.txt", ios::out|ios::app); 
-    		output_result();
+    		Output_result();
 		}
 		else if (choice == 4)
 		{
-			sort(choice);	
+			Sort(choice);	
 		}
 		else if (choice == 6)
 		{
@@ -223,7 +240,7 @@ int input(int choice)
 		}
 		else if (choice == 5)
 		{
-			scatter_diagram(); 	
+			Scatter_diagram(); 	
 		}
 				    
 		QueryPerformanceCounter(&time_over);
@@ -258,7 +275,7 @@ int DP()
 { 
 	max_value = KnapSack();
 	ofs.open("DP.txt", ios::out|ios::app); 
-	output_result();
+	Output_result();
 	return 0;
 }
 
@@ -312,7 +329,7 @@ int Greedy()
 	int k = 0, g = 0;
 	//重新归0，方便下次使用 
 	max_value = 0;
-	sort(choice3);
+	Sort(choice3);
 	for (int i = 0; i < N; i++)
 	{
 		g = decrease[k];
@@ -328,7 +345,7 @@ int Greedy()
 	
 	//将结果写入文件 
 	ofs.open("Greedy.txt", ios::out|ios::app); 
-	output_result();
+	Output_result();
 	return 0;
 }
 
@@ -371,7 +388,7 @@ void Backtracking(int i)
 }
 
 //5.按单位重量价值排序（递减排序） 
-int sort(int choice)
+int Sort(int choice)
 {
     int index;                  //下标 
     int k = 0, g = 0; 
@@ -420,7 +437,7 @@ int sort(int choice)
 	return 0;	
 } 
 //6.读文件，取得测试数据 
-void get_data()
+void Get_data()
 {
 	int count = 0;
 	int t1;
@@ -453,11 +470,11 @@ void get_data()
 	}
 	
 	ifs.close();
-	output();
+	Output();
 }
 
 //7.输出测试数据
-int output(){
+int Output(){
 	for (int i = 0; i < N; i++)
 	{
 		vw[i] = 0;
@@ -483,7 +500,7 @@ int output(){
 }
 
 //8.将结果输出并写入文件
-void output_result()
+void Output_result()
 {
 	ofs<<s<<"      ";
 	ofs<<"Max_value:"<<max_value<<"      ";
@@ -509,7 +526,7 @@ void output_result()
 } 
 
 //9.绘制散点图 
-void scatter_diagram()
+void Scatter_diagram()
 {
 	cout<<"本项目由于C++不方便使用，便单独用python实现了散点图功能\n";
 	cout<<"结果在同路径下的picture文件夹里！(此部分功能仍需拓展)\n";
