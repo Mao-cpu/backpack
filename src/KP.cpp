@@ -34,11 +34,12 @@ int DP();                           //动态规划解决KP问题
 int output();                  		//输出测试数据
 int Greedy();                  		//贪心算法解决KP问题
 int KnapSack();                		//构建动态规划表 
+void get_data();       	            //读文件，取得测试数据
 int sort(int choice);          		//按单位重量价值排序
 int input(int choice);         		//选择输入数据文件0-9 
-void get_data();       	            //读文件，取得测试数据
-void Backtracking(int i);      		//回溯法解决KP问题 
 void output_result();               //将结果输出并写入文件
+void scatter_diagram();             //绘制散点图 
+void Backtracking(int i);      		//回溯法解决KP问题 
 //******************主函数********************************* 
 int main()
 {
@@ -163,8 +164,7 @@ int input(int choice)
 		else if(choice==6)
 	        break;
 		else if(choice==5){
-			cout<<"本项目由于C++不方便使用，便单独用python实现了散点图功能\n";
-			cout<<"结果在同路径下的picture文件夹里！(此部分功能仍需拓展)\n";	
+			scatter_diagram(); 	
 		}		    
 		QueryPerformanceCounter(&time_over);
 		cout<<"运行时间:"<<((time_over.QuadPart-time_start.QuadPart)/dqFreq)<<"s\n";
@@ -405,7 +405,12 @@ void output_result()
 	cout<<"}"<<endl;
 	ofs<<"}"<<"      ";
 } 
- 
+//9.绘制散点图 
+void scatter_diagram()
+{
+	cout<<"本项目由于C++不方便使用，便单独用python实现了散点图功能\n";
+	cout<<"结果在同路径下的picture文件夹里！(此部分功能仍需拓展)\n";
+} 
  
 
 
