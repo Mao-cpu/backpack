@@ -36,23 +36,25 @@ int Greedy();                  		//贪心算法解决KP问题
 int KnapSack();                		//构建动态规划表 
 int sort(int choice);          		//按单位重量价值排序
 int input(int choice);         		//选择输入数据文件0-9 
-void foo();       	            	//读文件，取得测试数据
+void get_data();       	            //读文件，取得测试数据
 void Backtracking(int i);      		//回溯法解决KP问题 
 void output_result();               //将结果输出并写入文件
 //******************主函数********************************* 
 int main()
 {
-	int choice;
+	int choice; 
 	printf(" *******0/1背包问题********\n\n");
 	printf("        1.动态规划法       \n");
 	printf("        2.贪心算法         \n");
 	printf("        3.回溯算法         \n");
 	printf("        4.非递增排序       \n");
-	printf("        5.结束测试         \n\n"); 
+	printf("        5.绘制散点图       \n");
+	printf("        6.正确读入数据     \n");
+	printf("        7.结束测试         \n\n"); 
 	printf(" **************************\n");
 	cout<<"请选择算法(或结束测试)："; 
 	cin>>choice;
-	while(choice!=5)
+	while(choice!=7)
 	{
 		switch (choice)
 		{
@@ -68,7 +70,13 @@ int main()
 				break;
 			case 4:
 			    input(choice);
-				break; 
+				break;
+			case 5:
+			 	input(choice);
+				break;
+			case 6:
+			 	input(choice);
+				break;
 			default:
 			    printf("输错了！请重新输入！\n");
 				break;	
@@ -78,7 +86,9 @@ int main()
 		printf("        2.贪心算法         \n");
 		printf("        3.回溯算法         \n");
 		printf("        4.非递增排序       \n");
-		printf("        5.结束测试         \n\n"); 
+		printf("        5.绘制散点图       \n");
+		printf("        6.正确读入数据     \n");
+		printf("        7.结束测试         \n\n"); 
 		printf(" **************************\n");
 	    cout<<"请选择算法(或结束测试)："; 
 	    cin>>choice;
@@ -111,18 +121,19 @@ int input(int choice)
 		//每次都清空二维数组，以避免影响下次数据的测试 
     	memset(&w_v[0][0],0,sizeof(w_v));
     	//文件第一行数据为重量限制以及背包数，需单独拿出，用count来区分 
-		switch (choice2){
+		switch (choice2)
+		{
 			//打开文件 //执行算法 
-			case 0: ifs.open("beibao0.in",ios::in); s="beibao0.in"; foo(); break;
-			case 1: ifs.open("beibao1.in",ios::in); s="beibao1.in"; foo(); break;
-			case 2: ifs.open("beibao2.in",ios::in); s="beibao2.in"; foo(); break;
-			case 3: ifs.open("beibao3.in",ios::in); s="beibao3.in"; foo(); break;
-			case 4: ifs.open("beibao4.in",ios::in); s="beibao4.in"; foo(); break;
-			case 5: ifs.open("beibao5.in",ios::in); s="beibao5.in"; foo(); break;
-			case 6: ifs.open("beibao6.in",ios::in); s="beibao6.in"; foo(); break;
-			case 7: ifs.open("beibao7.in",ios::in); s="beibao7.in"; foo(); break;
-			case 8: ifs.open("beibao8.in",ios::in); s="beibao8.in"; foo(); break;
-			case 9: ifs.open("beibao9.in",ios::in); s="beibao9.in"; foo(); break;
+			case 0: ifs.open("beibao0.in",ios::in); s="beibao0.in"; get_data(); break;
+			case 1: ifs.open("beibao1.in",ios::in); s="beibao1.in"; get_data(); break;
+			case 2: ifs.open("beibao2.in",ios::in); s="beibao2.in"; get_data(); break;
+			case 3: ifs.open("beibao3.in",ios::in); s="beibao3.in"; get_data(); break;
+			case 4: ifs.open("beibao4.in",ios::in); s="beibao4.in"; get_data(); break;
+			case 5: ifs.open("beibao5.in",ios::in); s="beibao5.in"; get_data(); break;
+			case 6: ifs.open("beibao6.in",ios::in); s="beibao6.in"; get_data(); break;
+			case 7: ifs.open("beibao7.in",ios::in); s="beibao7.in"; get_data(); break;
+			case 8: ifs.open("beibao8.in",ios::in); s="beibao8.in"; get_data(); break;
+			case 9: ifs.open("beibao9.in",ios::in); s="beibao9.in"; get_data(); break;
 			default: cout<<"输入错误，请重新输入！"<<endl; break;	
 	    }
 		QueryPerformanceFrequency(&f);
@@ -149,6 +160,12 @@ int input(int choice)
     		output_result();
 		}else if(choice==4)
 			sort(choice);
+		else if(choice==6)
+	        break;
+		else if(choice==5){
+			cout<<"本项目由于C++不方便使用，便单独用python实现了散点图功能\n";
+			cout<<"结果在同路径下的picture文件夹里！(此部分功能仍需拓展)\n";	
+		}		    
 		QueryPerformanceCounter(&time_over);
 		cout<<"运行时间:"<<((time_over.QuadPart-time_start.QuadPart)/dqFreq)<<"s\n";
 		if(choice==1)
@@ -212,13 +229,13 @@ int KnapSack()
 //3.贪心算法解决KP问题（得到的结果是近似解，并非最优解！！！） 
 int Greedy()
 {
-	int choice=0;
+	int choice3=0;
 	//直接使用排好序的下标进行贪心选择
 	//计算最大重量，以及解向量 
 	int k=0,g=0;
 	//重新归0，方便下次使用 
 	max_value=0;
-	sort(choice);
+	sort(choice3);
 	for(int i=0;i<N;i++)
 	{
 		g=decrease[k];
@@ -312,7 +329,7 @@ int sort(int choice)
 	return 0;	
 } 
 //6.读文件，取得测试数据 
-void foo()
+void get_data()
 {
 	int count=0;
 	int t1;
